@@ -1,0 +1,174 @@
+/* BabelPipe — design tokens canónicos (ARCHITECTURE.md §5, SPEC.md §4).
+ *
+ * ESTA HOJA ES LA FUENTE ÚNICA DE TOKENS DEL PANEL DE CONTROL.
+ * `client/ui/control_panel.py` lee estos `--token` en tiempo de importación y
+ * genera de ellos la hoja GTK4 (`@define-color`), por lo que no existen
+ * hexadecimales duplicados en el módulo Python.
+ *
+ * El overlay (`client/overlay/subtitle_window.py`) mantiene sus propios tokens
+ * en su módulo; NO se replican aquí sus estilos ni su diccionario interno.
+ *
+ * Escala espacial estricta: múltiplos de 4 px (4, 8, 12, 16, 24, 32).
+ * rgba(11,15,20,0.62) son los componentes de --bg-canvas con alfa 0.62.
+ */
+
+:root {
+  /* Superficies en capas — HUD de estudio de grabación. */
+  --bg-canvas: #0B0F14;
+  --bg-surface: #151B23;
+  --bg-elevated: #1E2733;
+
+  /* Bordes: jerarquía sutil vs. separación fuerte. */
+  --border-subtle: #2A3543;
+  --border-strong: #3D4B5C;
+
+  /* Texto: contraste WCAG AA sobre bg-canvas / bg-surface. */
+  --text-primary: #E6EDF3;
+  --text-secondary: #B7C2D0;
+  --text-muted: #8B98A8;
+
+  /* Acento cian: --accent-foreground es el texto sobre relleno de acento. */
+  --accent-primary: #22D3EE;
+  --accent-foreground: #04212B;
+  --accent-hover: #67E8F9;
+
+  /* Semántica de estado. */
+  --status-success: #34D399;
+  --status-warning: #FBBF24;
+  --status-danger: #F87171;
+
+  /* Overlay flotante (el panel hereda la paleta, no los estilos del overlay). */
+  --overlay-bg: rgba(11,15,20,0.62);
+  --overlay-blur: 8px;
+
+  /* Tipografía: Inter para UI, JetBrains Mono para métricas y códigos. */
+  --font-sans: Inter;
+  --font-mono: JetBrains Mono;
+
+  /* Radios. */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Ritmo espacial: múltiplos de 4 px. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+}
+
+/* Referencia visual del panel. GTK4 no consume este bloque directamente:
+ * `control_panel.stylesheet()` genera las reglas equivalentes desde los MISMOS
+ * tokens de :root. Este bloque se mantiene sincronizado con esa función para
+ * que no exista divergencia entre la hoja de referencia y la hoja efectiva. */
+.bp-panel {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans), sans-serif;
+}
+.bp-panel-root { padding: var(--space-6); }
+.bp-title { color: var(--text-primary); font-size: 20px; font-weight: 700; }
+.bp-subtitle {
+  color: var(--text-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: var(--space-3);
+}
+.bp-state {
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+.bp-state.empty { border-color: var(--accent-primary); color: var(--text-primary); }
+.bp-state.error { border-color: var(--status-danger); color: var(--status-danger); }
+.bp-state-icon {
+  color: var(--accent-primary);
+  font-family: var(--font-mono), monospace;
+  min-width: var(--space-6);
+}
+
+.bp-form {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.bp-field-label { color: var(--text-secondary); font-weight: 600; }
+.bp-input {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+}
+.bp-input.is-invalid { border-color: var(--status-danger); }
+.bp-scale { color: var(--accent-primary); }
+.bp-scale trough {
+  min-height: var(--space-2);
+  background-color: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+}
+.bp-scale trough block.filled {
+  background-color: var(--accent-primary);
+  border-radius: var(--radius-sm);
+}
+.bp-switch:checked { background-color: var(--accent-primary); }
+.bp-field-error {
+  color: var(--status-danger);
+  font-family: var(--font-mono), monospace;
+  font-size: var(--space-3);
+}
+
+.bp-skeleton {
+  background-color: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  animation: bp-panel-pulse 1400ms ease-in-out infinite alternate;
+}
+@keyframes bp-panel-pulse { from { opacity: 0.55; } to { opacity: 1; } }
+
+.bp-apply, .bp-start, .bp-cta {
+  border-radius: var(--radius-sm);
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+.bp-apply {
+  background-color: var(--accent-primary);
+  color: var(--accent-foreground);
+  padding: var(--space-3);
+  font-weight: 700;
+}
+.bp-apply:hover { background-color: var(--accent-hover); }
+.bp-apply:disabled { opacity: 0.5; }
+.bp-start {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  padding: var(--space-3);
+  font-weight: 700;
+}
+.bp-start:hover { background-color: var(--border-subtle); }
+.bp-start.running {
+  background-color: var(--status-success);
+  color: var(--accent-foreground);
+}
+.bp-cta {
+  color: var(--accent-primary);
+  background-color: transparent;
+  border: 1px solid var(--border-strong);
+  padding: var(--space-2) var(--space-3);
+}
+.bp-cta:hover { background-color: var(--bg-elevated); border-color: var(--accent-primary); }
+
+.bp-apply:focus-visible, .bp-start:focus-visible, .bp-cta:focus-visible,
+.bp-input:focus-visible, .bp-switch:focus-visible, .bp-scale:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: var(--space-1);
+}
+.bp-hint {
+  color: var(--text-muted);
+  font-family: var(--font-mono), monospace;
+  font-size: var(--space-3);
+}

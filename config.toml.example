@@ -1,0 +1,27 @@
+# BabelPipe — plantilla de configuracion (ARCHITECTURE.md §3)
+# Copiar a config.toml. Espejo de .env.example. Sin secretos reales.
+
+[server]
+host = "127.0.0.1"
+port = 8765
+token = ""
+
+[audio]
+rx_sink = "Translator_Rx_Sink"
+tx_source = "Translator_Tx_Mic"
+# Rango legal 0.10-0.15 (SPEC REQ-05).
+duck_level = 0.12
+echo_cancel = true
+ptt_enabled = false
+
+[pipeline]
+source_lang = "en"
+target_lang = "es"
+stt = "faster-whisper"
+translator = "opus-mt"
+tts = "kokoro"
+
+[model]
+stt_path = ""
+translator_path = ""
+tts_path = ""

@@ -1,0 +1,21 @@
+# Secretos y entorno
+.env
+
+# Entorno virtual y Python
+.venv/
+__pycache__/
+*.pyc
+
+# Fixtures de audio generadas (no commitear binarios)
+tests/fixtures/*.wav
+
+# Artefactos de build y empaquetado
+dist/
+build/
+*.AppImage
+*.flatpak
+
+# Caches de herramientas
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/

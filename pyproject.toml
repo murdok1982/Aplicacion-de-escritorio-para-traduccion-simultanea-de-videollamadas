@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "babelpipe"
+version = "0.1.0"
+description = "Traduccion simultanea universal sobre PipeWire"
+requires-python = ">=3.12,<3.14"
+license = "MIT"
+authors = [{ name = "BabelPipe contributors" }]
+dependencies = [
+    "websockets>=13,<14",
+    "pydantic>=2.9,<3",
+    "soxr>=0.5,<0.6",
+    "numpy>=2,<3",
+    "soundfile>=0.12,<0.13",
+]
+
+[project.optional-dependencies]
+# Inferencia pesada: se instala solo donde corra el servidor (TASK-011..TASK-015).
+inference = [
+    "silero-vad>=5.1,<6",
+    "faster-whisper>=1.1,<2",
+    "ctranslate2>=4.5,<5",
+    "openai>=1.5,<2",
+    "kokoro>=0.9,<0.10",
+    "misaki>=0.9,<1",
+]
+# Binding GTK4 del cliente: requiere las bibliotecas del sistema (libgtk-4, libgirepository).
+ui = [
+    "PyGObject>=3.50,<4",
+]
+
+[project.scripts]
+babelpipe-client = "client.main:main"
+babelpipe-server = "server.main:main"
+
+[tool.uv]
+# SPEC.md §6 / ADR-004: misaki declara backend espeak como extra opcional.
+# Se excluyen de la resolucion para que nunca aparezcan en uv.lock (gate
+# LICENSE_VIOLATION de TASK-024). El G2P permitido es el puro de misaki (MIT).
+exclude-dependencies = ["phonemizer-fork", "phonemizer", "espeakng-loader"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3,<10",
+    "pytest-asyncio>=1.0,<2",
+    "ruff>=0.7,<0.8",
+    "mypy>=1.11,<2",
+    "pip-audit>=2.7,<3",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["client", "server", "shared"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [".venv", "dist", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+pretty = true
+show_error_codes = true
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = "."
+
+[[tool.mypy.overrides]]
+module = [
+    "gi.*",
+    "silero_vad.*",
+    "kokoro.*",
+    "misaki.*",
+]
+ignore_missing_imports = true

@@ -1,0 +1,75 @@
+BabelPipe — Traducción Simultánea Universal sobre PipeWire
+NOTICE — Atribuciones y licencias de terceros
+============================================================
+
+Este producto incorpora componentes de software de terceros. Se enumeran a
+continuación las atribuciones exigidas por sus respectivas licencias.
+
+------------------------------------------------------------
+Opus-MT (modelos de traducción neuronal) — CC BY 4.0
+------------------------------------------------------------
+Modelos Opus-MT desarrollados por el proyecto OPUS, Universidad de Helsinki.
+Licencia: Creative Commons Attribution 4.0 International (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+Atribución obligatoria conforme a SPEC.md §6. Los modelos se distribuyen por
+separado y no se incluyen binarios en este repositorio.
+
+------------------------------------------------------------
+Kokoro-82M / paquete `kokoro` (TTS principal) — Apache-2.0
+------------------------------------------------------------
+Licencia: Apache License, Version 2.0.
+https://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------
+Qwen3-TTS (alternativa TTS) — Apache-2.0
+------------------------------------------------------------
+Licencia: Apache License, Version 2.0.
+https://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------
+Silero VAD (segmentación por pausas) — MIT
+------------------------------------------------------------
+Licencia: MIT License.
+https://opensource.org/licenses/MIT
+
+------------------------------------------------------------
+faster-whisper (STT) — MIT
+------------------------------------------------------------
+Licencia: MIT License.
+https://opensource.org/licenses/MIT
+
+------------------------------------------------------------
+CTranslate2 (motor de inferencia) — MIT
+------------------------------------------------------------
+Licencia: MIT License.
+https://opensource.org/licenses/MIT
+
+------------------------------------------------------------
+Misaki (G2P) — MIT
+------------------------------------------------------------
+Licencia: MIT License.
+https://opensource.org/licenses/MIT
+Se usa en lugar de espeak-ng/phonemizer para evitar copyleft GPL (ADR-004).
+
+------------------------------------------------------------
+OpenAI Python SDK (endpoint LLM compatible) — MIT
+------------------------------------------------------------
+Licencia: MIT License.
+https://opensource.org/licenses/MIT
+
+------------------------------------------------------------
+Exclusiones de licencia (SPEC.md §6 / ADR-003 / ADR-004)
+------------------------------------------------------------
+Los siguientes componentes están EXPRESAMENTE EXCLUIDOS y no se declaran,
+instalan ni distribuyen en este proyecto:
+
+  * NLLB-200              — CC BY-NC 4.0  (no comercial). Se sustituye por
+                            Opus-MT (CC BY 4.0) y LLM local Apache-2.0/MIT.
+  * XTTS v2               — CPML (no comercial). Prohibido por el usuario.
+  * F5-TTS                — CC BY-NC. Prohibido por el usuario.
+  * Piper                 — GPL-3.0 (copyleft viral).
+  * espeak-ng /
+    phonemizer-espeak     — GPL-3.0. Sustituido por Misaki (MIT).
+
+Cualquier dependencia transitiva que introduzca una de estas licencias debe
+hacer fallar el gate de licencias (TASK-024) con código LICENSE_VIOLATION.
